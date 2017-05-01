@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Merge;
 import edu.princeton.cs.algs4.Queue;
@@ -31,16 +33,19 @@ public class BruteCollinearPoints {
           }
        }
      }
-     LineSegments = new LineSegment[num];
-     for (int i = 0; i < num; i++) {
-       LineSegments[i] = point_pair.dequeue();
-    }
    }
    public int numberOfSegments() {
      return num;
    }
    
    public LineSegment[] segments() {
+     LineSegments = new LineSegment[num];
+     int iter_num = 0;
+     Iterator<LineSegment> iter = point_pair.iterator();
+     while (iter.hasNext()) {
+       LineSegments[iter_num] = iter.next();
+       iter_num++;
+     }
      return LineSegments;
    }
    public static void main(String[] args) {
@@ -66,7 +71,7 @@ public class BruteCollinearPoints {
 
     // print and draw the line segments
     BruteCollinearPoints collinear = new BruteCollinearPoints(points);
-    StdOut.println("Helllo" + collinear.numberOfSegments());
+    StdOut.println("Hello1\n" + collinear.numberOfSegments());
     for (LineSegment segment : collinear.segments()) {
         StdOut.println(segment);
         segment.draw();

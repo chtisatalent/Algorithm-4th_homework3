@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Merge;
 import edu.princeton.cs.algs4.Queue;
@@ -24,14 +26,17 @@ public class FastCollinearPoints {
        Merge.sort(slopes);
        for (int p = 0; p < slopes.length - 2; p++) {
          if (slopes [p] == slopes[p + 2]) {
-           point_pair.enqueue(new LineSegment(points[i],points[p + 3 + i]));
+           int endpoint = p + 2;
+           for (int e = p + 2; e < slopes.length; e++) {
+             if (slopes[e] != slopes[e + 1]) {
+               endpoint = e;
+               break;
+             }
+           }
+           point_pair.enqueue(new LineSegment(points[i],points[endpoint+ 1 + i]));
            num ++;
          }
        }
-     }
-     LineSegments = new LineSegment[num];
-     for (int i = 0; i < num; i++) {
-       LineSegments[i] = point_pair.dequeue();
      }
    }
    
@@ -40,6 +45,13 @@ public class FastCollinearPoints {
    }
    
    public LineSegment[] segments() {
+     LineSegments = new LineSegment[num];
+     int iter_num = 0;
+     Iterator<LineSegment> iter = point_pair.iterator();
+     while (iter.hasNext()) {
+       LineSegments[iter_num] = iter.next();
+       iter_num++;
+     }
      return LineSegments;
    }
    
@@ -66,7 +78,7 @@ public class FastCollinearPoints {
 
     // print and draw the line segments
     BruteCollinearPoints collinear = new BruteCollinearPoints(points);
-    StdOut.println("Helllo" + collinear.numberOfSegments());
+    StdOut.println("Hello2\n"+ collinear.numberOfSegments());
     for (LineSegment segment : collinear.segments()) {
         StdOut.println(segment);
         segment.draw();

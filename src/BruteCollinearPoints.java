@@ -10,31 +10,31 @@ public class BruteCollinearPoints {
    private LineSegment[] LineSegments;
    public BruteCollinearPoints(Point[] points) {
      if (points == null) throw new java.lang.NullPointerException("no point");
-     point_pair = new Queue<LineSegment>() ;
+     point_pair = new Queue<LineSegment>();
      int len = points.length;
      Merge.sort(points);
-     for (int i = 0; i < len; i++) {
-        for (int j = i + 1; j < len; j++) {
-        // 利用外层循环检测重复点
-        if(points[i] == points[j]) throw new java.lang.IllegalArgumentException("duplicate");
-          for (int q = j + 1; q < len; q++) {
-            for (int p = q + 1; p < len; p++) {
-                if ((points[i].slopeTo(points[j]) == points[j].slopeTo(points[q])) && (points[j].slopeTo(points[q]) == points[q].slopeTo(points[p]))) {
-              /*    StdOut.println("0" + points[i] + " " + points[j] + " "+ points[q]+ " "+points[p]);
-                  StdOut.println("1" + points[i].slopeTo(points[j]));
-                  StdOut.println("2" + points[j].slopeTo(points[q]));
-                  StdOut.println("3" + points[q].slopeTo(points[p]));*/
-                  point_pair.enqueue(new LineSegment(points[i],points[p]));
-                  num ++;            
-                }
-            } 
+     for (int i = 0; i < len - 1; i++) {
+         // 判断相等要用compareTo
+       if (points[i].compareTo(points[i + 1]) == 0) throw new java.lang.IllegalArgumentException("duplicate");
+     }
+     if(len >= 4) {      
+       for (int i = 0; i < len; i++) {
+          for (int j = i + 1; j < len; j++) {
+            for (int q = j + 1; q < len; q++) {
+              for (int p = q + 1; p < len; p++) {
+                  if ((points[i].slopeTo(points[j]) == points[j].slopeTo(points[q])) && (points[j].slopeTo(points[q]) == points[q].slopeTo(points[p]))) {
+                    point_pair.enqueue(new LineSegment(points[i],points[p]));
+                    num ++;            
+                  }
+              } 
+            }
           }
-        }
+       }
      }
      LineSegments = new LineSegment[num];
      for (int i = 0; i < num; i++) {
        LineSegments[i] = point_pair.dequeue();
-     }
+    }
    }
    public int numberOfSegments() {
      return num;

@@ -18,6 +18,8 @@ public class FastCollinearPoints {
        slopes = new Double [len - i - 1];
        for (int j = i + 1; j < len; j++){
          slopes[j - i - 1] = (points[i].slopeTo(points[j]));
+         // 利用斜率来判断重复点
+         if (slopes[j - i - 1] == Double.NEGATIVE_INFINITY) throw new java.lang.IllegalArgumentException("duplicate");
        }
        Merge.sort(slopes);
        for (int p = 0; p < slopes.length - 2; p++) {

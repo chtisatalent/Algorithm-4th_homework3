@@ -15,6 +15,8 @@ public class BruteCollinearPoints {
      Merge.sort(points);
      for (int i = 0; i < len; i++) {
         for (int j = i + 1; j < len; j++) {
+        // 利用外层循环检测重复点
+        if(points[i] == points[j]) throw new java.lang.IllegalArgumentException("duplicate");
           for (int q = j + 1; q < len; q++) {
             for (int p = q + 1; p < len; p++) {
                 if ((points[i].slopeTo(points[j]) == points[j].slopeTo(points[q])) && (points[j].slopeTo(points[q]) == points[q].slopeTo(points[p]))) {
